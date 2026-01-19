@@ -10,9 +10,10 @@ const parseSpecialDays = (value: unknown): SpecialDay[] => {
     return [];
   }
 
-  const specials = value.map((item) => {
+  const specials: SpecialDay[] = [];
+  for (const item of value) {
     if (!item || typeof item !== "object") {
-      return null;
+      continue;
     }
     const record = item as Record<string, unknown>;
     const month = typeof record.month === "number" ? Math.trunc(record.month) : 0;
@@ -23,13 +24,13 @@ const parseSpecialDays = (value: unknown): SpecialDay[] => {
       typeof record.isBirthday === "boolean" ? record.isBirthday : undefined;
 
     if (!color || month < 1 || month > 12 || day < 1 || day > 31) {
-      return null;
+      continue;
     }
 
-    return { month, day, color, label, isBirthday };
-  });
+    specials.push({ month, day, color, label, isBirthday });
+  }
 
-  return specials.filter((item): item is SpecialDay => item !== null);
+  return specials;
 };
 
 export const GET = async (
