@@ -164,12 +164,11 @@ const renderImage = ({
   const columns = 15;
   const rowWidth = dotSize * columns + gap * (columns - 1);
   const textSize = Math.min(42, Math.max(12, Math.round(12 * scale)));
-  const textGap = Math.max(16, Math.round(22 * scale));
-  const topOffset = Math.round(height * 0.165);
+  const textGap = Math.max(14, Math.round(20 * scale));
+  const topOffset = Math.round(height * 0.265);
 
   const todayISO = now.toISODate();
-  const birthdayToday =
-    todayISO && specialByDate[todayISO]?.isBirthday ? specialByDate[todayISO] : null;
+  const todaySpecial = todayISO ? specialByDate[todayISO] : null;
 
   const dotNodes = dots.map((dot) =>
     h("div", {
@@ -219,27 +218,46 @@ const renderImage = ({
     "div",
     {
       style: {
+        display: "flex",
+        gap: Math.max(6, Math.round(textSize * 0.35)),
         fontSize: textSize,
-        color: "#ff6a3d",
         letterSpacing: 0.5,
       },
     },
-    `${stats.daysLeft}d left · ${stats.percent}%`,
+    h(
+      "span",
+      {
+        style: {
+          color: "#ff6a3d",
+        },
+      },
+      `${stats.daysLeft}d left`,
+    ),
+    h(
+      "span",
+      {
+        style: {
+          color: "#bdbdbd",
+        },
+      },
+      `· ${stats.percent}%`,
+    ),
   );
 
-  const birthdayText = birthdayToday
-    ? h(
-        "div",
-        {
-          style: {
-            fontSize: Math.round(textSize * 1.2),
-            color: "#f5a623",
-            letterSpacing: 1,
+  const specialLabelText =
+    todaySpecial && todaySpecial.label
+      ? h(
+          "div",
+          {
+            style: {
+              fontSize: Math.round(textSize * 1.2),
+              color: todaySpecial.color,
+              letterSpacing: 1,
+            },
           },
-        },
-        birthdayToday.label ?? "Happy Birthday",
-      )
-    : null;
+          todaySpecial.label,
+        )
+      : null;
 
   const container = h(
     "div",
@@ -250,8 +268,9 @@ const renderImage = ({
         backgroundColor: "#0b0b0b",
         color: "#ffffff",
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-start",
         fontFamily: "Arial, Helvetica, sans-serif",
       },
     },
@@ -267,7 +286,7 @@ const renderImage = ({
         },
       },
       grid,
-      birthdayText,
+      specialLabelText,
       text,
     ),
   );

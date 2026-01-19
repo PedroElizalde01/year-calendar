@@ -31,5 +31,19 @@
       }
     ],
     "updatedAt": "2026-01-19T03:21:40.388Z"
+  },
+  "be92cf61b2a8": {
+    "id": "be92cf61b2a8",
+    "timeZone": "America/Argentina/Buenos_Aires",
+    "specialDays": [
+      {
+        "month": 1,
+        "day": 19,
+        "color": "#7c5cff",
+        "label": "mi cumple",
+        "isBirthday": true
+      }
+    ],
+    "updatedAt": "2026-01-19T04:29:44.850Z"
   }
 }
