@@ -38,7 +38,12 @@ const writeStore = async (store: ProfileMap) => {
   await fs.writeFile(DATA_FILE, JSON.stringify(store, null, 2), "utf8");
 };
 
-const generateId = () => randomBytes(6).toString("hex");
+const generateId = () =>
+  randomBytes(6)
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/g, "");
 
 const toSanitizedSpecials = (value: SpecialDay[]): SpecialDay[] =>
   value
