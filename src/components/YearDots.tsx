@@ -308,6 +308,11 @@ export default function YearDots() {
         if (!response.ok) {
           throw new Error("profile-update-failed");
         }
+        const data = (await response.json()) as { id?: string };
+        if (data.id && data.id !== id) {
+          id = data.id;
+          setProfileId(id);
+        }
       } else {
         const response = await fetch("/api/profile", {
           method: "POST",
