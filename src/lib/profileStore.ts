@@ -1,5 +1,3 @@
-import { promises as fs } from "fs";
-import path from "path";
 import { randomBytes } from "crypto";
 import { put } from "@vercel/blob";
 
@@ -12,31 +10,8 @@ type ProfileRecord = {
   updatedAt: string;
 };
 
-type ProfileMap = Record<string, ProfileRecord>;
-
-const DATA_DIR = path.join(process.cwd(), ".data");
-const DATA_FILE = path.join(DATA_DIR, "profiles.json");
-const ENCODED_PREFIX = "p_";
 const BLOB_BASE_URL = process.env.BLOB_BASE_URL ?? "";
 const HAS_BLOB_CONFIG = Boolean(process.env.BLOB_READ_WRITE_TOKEN && BLOB_BASE_URL);
-
-const ensureStore = async () => {
-  await fs.mkdir(DATA_DIR, { recursive: true });
-};
-
-const readStore = async (): Promise<ProfileMap> => {
-  try {
-    const raw = await fs.readFile(DATA_FILE, "utf8");
-    return JSON.parse(raw) as ProfileMap;
-  } catch {
-    return {};
-  }
-};
-
-const writeStore = async (store: ProfileMap) => {
-  await ensureStore();
-  await fs.writeFile(DATA_FILE, JSON.stringify(store, null, 2), "utf8");
-};
 
 const generateId = () =>
   randomBytes(6)
@@ -63,31 +38,6 @@ const toSanitizedSpecials = (value: SpecialDay[]): SpecialDay[] =>
         typeof item.color === "string" &&
         item.color.length > 0,
     );
-
-const base64UrlEncode = (value: string) =>
-  Buffer.from(value, "utf8")
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/g, "");
-
-const base64UrlDecode = (value: string) => {
-  const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
-  const padLength = (4 - (normalized.length % 4)) % 4;
-  const padded = `${normalized}${"=".repeat(padLength)}`;
-  return Buffer.from(padded, "base64").toString("utf8");
-};
-
-const encodeProfile = (
-  settings: Pick<Settings, "timeZone" | "specialDays">,
-) => {
-  const payload = {
-    timeZone: settings.timeZone,
-    specialDays: toSanitizedSpecials(settings.specialDays),
-  };
-  const encoded = base64UrlEncode(JSON.stringify(payload));
-  return `${ENCODED_PREFIX}${encoded}`;
-};
 
 const buildRecord = (
   id: string,
@@ -157,120 +107,38 @@ const writeBlobProfile = async (record: ProfileRecord) => {
   return record;
 };
 
-const decodeProfile = (id: string): ProfileRecord | null => {
-  if (!id.startsWith(ENCODED_PREFIX)) {
-    return null;
-  }
-  try {
-    const raw = base64UrlDecode(id.slice(ENCODED_PREFIX.length));
-    const parsed = JSON.parse(raw) as Partial<ProfileRecord> & {
-      timeZone?: unknown;
-      specialDays?: unknown;
-    };
-    if (typeof parsed.timeZone !== "string") {
-      return null;
-    }
-    const specials = Array.isArray(parsed.specialDays)
-      ? toSanitizedSpecials(parsed.specialDays as SpecialDay[])
-      : [];
-    return {
-      id,
-      timeZone: parsed.timeZone,
-      specialDays: specials,
-      updatedAt: new Date().toISOString(),
-    };
-  } catch {
-    return null;
-  }
-};
-
 export const createProfile = async (
   settings: Pick<Settings, "timeZone" | "specialDays">,
 ) => {
-  let id = generateId();
-  if (HAS_BLOB_CONFIG) {
-    while (await blobExists(id)) {
-      id = generateId();
-    }
-    const record = buildRecord(id, settings);
-    try {
-      return await writeBlobProfile(record);
-    } catch {
-      // fall through to local or encoded fallback
-    }
+  if (!HAS_BLOB_CONFIG) {
+    throw new Error("blob-not-configured");
   }
-
-  const store = await readStore();
-  while (store[id]) {
+  let id = generateId();
+  while (await blobExists(id)) {
     id = generateId();
   }
   const record = buildRecord(id, settings);
-  try {
-    store[id] = record;
-    await writeStore(store);
-    return record;
-  } catch {
-    return {
-      id: encodeProfile(settings),
-      timeZone: record.timeZone,
-      specialDays: record.specialDays,
-      updatedAt: record.updatedAt,
-    };
-  }
+  return writeBlobProfile(record);
 };
 
 export const updateProfile = async (
   id: string,
   settings: Pick<Settings, "timeZone" | "specialDays">,
 ) => {
-  const decoded = decodeProfile(id);
-  if (decoded) {
-    return {
-      ...decoded,
-      id: encodeProfile(settings),
-      timeZone: settings.timeZone,
-      specialDays: toSanitizedSpecials(settings.specialDays),
-      updatedAt: new Date().toISOString(),
-    };
+  if (!HAS_BLOB_CONFIG) {
+    throw new Error("blob-not-configured");
   }
   const record = buildRecord(id, settings);
-  if (HAS_BLOB_CONFIG) {
-    const existing = await fetchBlobProfile(id);
-    if (!existing) {
-      return null;
-    }
-    try {
-      return await writeBlobProfile(record);
-    } catch {
-      // fall through to local or encoded fallback
-    }
-  }
-
-  const store = await readStore();
-  if (!store[id]) {
+  const existing = await fetchBlobProfile(id);
+  if (!existing) {
     return null;
   }
-  store[id] = record;
-  try {
-    await writeStore(store);
-    return store[id];
-  } catch {
-    return {
-      id: encodeProfile(settings),
-      timeZone: record.timeZone,
-      specialDays: record.specialDays,
-      updatedAt: record.updatedAt,
-    };
-  }
+  return writeBlobProfile(record);
 };
 
 export const getProfile = async (id: string) => {
-  if (HAS_BLOB_CONFIG) {
-    const blobProfile = await fetchBlobProfile(id);
-    if (blobProfile) {
-      return blobProfile;
-    }
+  if (!HAS_BLOB_CONFIG) {
+    return null;
   }
-  const store = await readStore();
-  return store[id] ?? decodeProfile(id);
+  return fetchBlobProfile(id);
 };

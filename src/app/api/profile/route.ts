@@ -45,7 +45,10 @@ export const POST = async (request: NextRequest) => {
 
     const profile = await createProfile({ timeZone, specialDays });
     return Response.json({ id: profile.id });
-  } catch {
+  } catch (error) {
+    if (error instanceof Error && error.message === "blob-not-configured") {
+      return Response.json({ error: "blob-not-configured" }, { status: 500 });
+    }
     return Response.json({ error: "invalid-body" }, { status: 400 });
   }
 };
