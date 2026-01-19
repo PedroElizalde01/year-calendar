@@ -60,15 +60,8 @@ export const PUT = async (
     }
 
     const profile = await updateProfile(id, { timeZone, specialDays });
-    if (!profile) {
-      return Response.json({ error: "not-found" }, { status: 404 });
-    }
-
     return Response.json({ id: profile.id });
-  } catch (error) {
-    if (error instanceof Error && error.message === "blob-not-configured") {
-      return Response.json({ error: "blob-not-configured" }, { status: 500 });
-    }
-    return Response.json({ error: "invalid-body" }, { status: 400 });
+  } catch {
+    return Response.json({ error: "storage-error" }, { status: 500 });
   }
 };

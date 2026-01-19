@@ -11,7 +11,6 @@ type ProfileRecord = {
 };
 
 const BLOB_BASE_URL = process.env.BLOB_BASE_URL ?? "";
-const HAS_BLOB_CONFIG = Boolean(process.env.BLOB_READ_WRITE_TOKEN && BLOB_BASE_URL);
 
 const generateId = () =>
   randomBytes(6)
@@ -110,11 +109,8 @@ const writeBlobProfile = async (record: ProfileRecord) => {
 export const createProfile = async (
   settings: Pick<Settings, "timeZone" | "specialDays">,
 ) => {
-  if (!HAS_BLOB_CONFIG) {
-    throw new Error("blob-not-configured");
-  }
   let id = generateId();
-  while (await blobExists(id)) {
+  while (BLOB_BASE_URL && (await blobExists(id))) {
     id = generateId();
   }
   const record = buildRecord(id, settings);
@@ -125,20 +121,10 @@ export const updateProfile = async (
   id: string,
   settings: Pick<Settings, "timeZone" | "specialDays">,
 ) => {
-  if (!HAS_BLOB_CONFIG) {
-    throw new Error("blob-not-configured");
-  }
   const record = buildRecord(id, settings);
-  const existing = await fetchBlobProfile(id);
-  if (!existing) {
-    return null;
-  }
   return writeBlobProfile(record);
 };
 
 export const getProfile = async (id: string) => {
-  if (!HAS_BLOB_CONFIG) {
-    return null;
-  }
   return fetchBlobProfile(id);
 };
