@@ -120,9 +120,6 @@ export default function YearDots() {
   }, [timeZone]);
 
   const todayKey = now.toISODate();
-  const todaySpecial = todayKey ? specialByDate[todayKey] : null;
-  const isBirthdayToday = todaySpecial?.isBirthday ?? false;
-  const birthdayColor = isBirthdayToday ? todaySpecial?.color : null;
 
   useEffect(() => {
     const current = DateTime.now().setZone(timeZone);
@@ -159,6 +156,10 @@ export default function YearDots() {
     }
     return map;
   }, [specialDays, now.year, timeZone]);
+
+  const todaySpecial = todayKey ? specialByDate[todayKey] : null;
+  const isBirthdayToday = todaySpecial?.isBirthday ?? false;
+  const birthdayColor = isBirthdayToday ? todaySpecial?.color : null;
 
   const stats = useMemo(() => getYearStats(now), [now]);
   const dots = useMemo(
