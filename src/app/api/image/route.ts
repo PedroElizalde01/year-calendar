@@ -273,7 +273,7 @@ const renderImage = ({
           left: 0,
           right: 0,
           bottom: 0,
-          boxShadow: `inset 0 0 ${Math.round(height * 0.15)}px ${Math.round(height * 0.06)}px ${birthdayColor}55, inset 0 0 ${Math.round(height * 0.3)}px ${Math.round(height * 0.1)}px ${birthdayColor}33`,
+          boxShadow: `inset 0 0 ${Math.round(height * 0.12)}px ${Math.round(height * 0.04)}px ${birthdayColor}30, inset 0 0 ${Math.round(height * 0.25)}px ${Math.round(height * 0.08)}px ${birthdayColor}18`,
         },
       })
     : null;

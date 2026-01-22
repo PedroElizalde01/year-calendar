@@ -373,7 +373,7 @@ export default function YearDots() {
       style={
         isBirthdayToday && birthdayColor
           ? {
-              boxShadow: `inset 0 0 150px 60px ${birthdayColor}55, inset 0 0 300px 100px ${birthdayColor}33`,
+              boxShadow: `inset 0 0 120px 40px ${birthdayColor}30, inset 0 0 250px 80px ${birthdayColor}18`,
             }
           : undefined
       }
