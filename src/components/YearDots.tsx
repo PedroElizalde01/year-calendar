@@ -390,7 +390,7 @@ export default function YearDots() {
               >
                 {(timeZoneOptions.length > 0 ? timeZoneOptions : [timeZone]).map(
                   (zone) => (
-                  <option key={zone} value={zone} className="bg-zinc-900 text-white">
+                  <option key={zone} value={zone} className="bg-zinc-900 font-mono text-white">
                     {zone}
                   </option>
                 ),
@@ -404,11 +404,11 @@ export default function YearDots() {
                 value={wallpaperPreset}
                 onChange={(event) => setWallpaperPreset(event.target.value)}
               >
-                <option value="1170x2532" className="bg-zinc-900 text-white">1170×2532</option>
-                <option value="1179x2556" className="bg-zinc-900 text-white">1179×2556</option>
-                <option value="1206x2622" className="bg-zinc-900 text-white">1206×2622</option>
-                <option value="1290x2796" className="bg-zinc-900 text-white">1290×2796</option>
-                <option value="1320x2868" className="bg-zinc-900 text-white">1320×2868</option>
+                <option value="1170x2532" className="bg-zinc-900 font-mono text-white">1170×2532</option>
+                <option value="1179x2556" className="bg-zinc-900 font-mono text-white">1179×2556</option>
+                <option value="1206x2622" className="bg-zinc-900 font-mono text-white">1206×2622</option>
+                <option value="1290x2796" className="bg-zinc-900 font-mono text-white">1290×2796</option>
+                <option value="1320x2868" className="bg-zinc-900 font-mono text-white">1320×2868</option>
               </select>
             </label>
           </div>
@@ -574,7 +574,7 @@ export default function YearDots() {
                     className="w-full border-b border-[--border] bg-transparent px-1 py-2 text-sm text-[--foreground] outline-none transition focus:border-[--accent]"
                   >
                     {MONTHS_LONG.map((label, idx) => (
-                      <option key={label} value={idx + 1} className="bg-zinc-900 text-white">
+                      <option key={label} value={idx + 1} className="bg-zinc-900 font-sans text-white">
                         {label}
                       </option>
                     ))}
@@ -596,7 +596,7 @@ export default function YearDots() {
                         <option
                           key={idx + 1}
                           value={idx + 1}
-                          className="bg-zinc-900 text-white"
+                          className="bg-zinc-900 font-mono text-white"
                         >
                           {idx + 1}
                         </option>
