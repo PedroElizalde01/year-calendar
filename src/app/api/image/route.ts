@@ -269,14 +269,11 @@ const renderImage = ({
     ? h("div", {
         style: {
           position: "absolute",
-          top: topOffset - Math.round(height * 0.15),
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: Math.round(width * 0.7),
-          height: Math.round(width * 0.7),
-          borderRadius: "50%",
-          background: `radial-gradient(circle, ${birthdayColor}66 0%, ${birthdayColor}33 40%, transparent 70%)`,
-          filter: `blur(${Math.round(scale * 30)}px)`,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          boxShadow: `inset 0 0 ${Math.round(height * 0.15)}px ${Math.round(height * 0.06)}px ${birthdayColor}55, inset 0 0 ${Math.round(height * 0.3)}px ${Math.round(height * 0.1)}px ${birthdayColor}33`,
         },
       })
     : null;

@@ -368,7 +368,16 @@ export default function YearDots() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#0b0b0b] text-white">
+    <div
+      className="min-h-screen w-full bg-[#0b0b0b] text-white"
+      style={
+        isBirthdayToday && birthdayColor
+          ? {
+              boxShadow: `inset 0 0 150px 60px ${birthdayColor}55, inset 0 0 300px 100px ${birthdayColor}33`,
+            }
+          : undefined
+      }
+    >
       <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center justify-center gap-8 px-6 py-12">
         <div className="flex w-full flex-col items-center justify-between gap-4 text-xs text-zinc-400 sm:flex-row">
           <label className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-zinc-500">
@@ -421,12 +430,6 @@ export default function YearDots() {
         </div>
 
         <div className="relative flex flex-col items-center gap-6">
-          {isBirthdayToday && birthdayColor && (
-            <div
-              className="birthday-glow pointer-events-none absolute -inset-16 -z-10 rounded-full opacity-60 blur-3xl"
-              style={{ backgroundColor: birthdayColor }}
-            />
-          )}
           <div
             className="grid place-content-center gap-[6px]"
             style={{ gridTemplateColumns: "repeat(15, 12px)" }}
