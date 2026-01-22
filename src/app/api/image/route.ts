@@ -9,9 +9,19 @@ import { getProfile } from "@/lib/profileStore";
 
 export const runtime = "nodejs";
 
-const fontPromise = fetch(
-  "https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPVmUsaaDhw.woff"
-).then((res) => res.arrayBuffer());
+const getFontData = async () => {
+  try {
+    const response = await fetch(
+      "https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPVmUsaaDhw.woff",
+    );
+    if (!response.ok) {
+      return null;
+    }
+    return await response.arrayBuffer();
+  } catch {
+    return null;
+  }
+};
 
 const DEFAULT_WIDTH = 1170;
 const DEFAULT_HEIGHT = 2532;
@@ -145,7 +155,7 @@ const renderImage = async ({
   width: number;
   height: number;
 }) => {
-  const fontData = await fontPromise;
+  const fontData = await getFontData();
   const zoned = DateTime.now().setZone(timeZone);
   const now = zoned.isValid ? zoned : DateTime.now().setZone("UTC");
 
@@ -334,9 +344,13 @@ const renderImage = async ({
     ),
   );
 
+  const options = { width, height } as const;
+  if (!fontData) {
+    return new ImageResponse(container, options);
+  }
+
   return new ImageResponse(container, {
-    width,
-    height,
+    ...options,
     fonts: [
       {
         name: "JetBrains Mono",
