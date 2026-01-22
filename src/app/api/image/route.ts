@@ -9,6 +9,10 @@ import { getProfile } from "@/lib/profileStore";
 
 export const runtime = "nodejs";
 
+const fontPromise = fetch(
+  "https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPVmUsaaDhw.woff"
+).then((res) => res.arrayBuffer());
+
 const DEFAULT_WIDTH = 1170;
 const DEFAULT_HEIGHT = 2532;
 
@@ -130,7 +134,7 @@ export const GET = (request: NextRequest) => {
   });
 };
 
-const renderImage = ({
+const renderImage = async ({
   timeZone,
   specialDays,
   width,
@@ -141,6 +145,7 @@ const renderImage = ({
   width: number;
   height: number;
 }) => {
+  const fontData = await fontPromise;
   const zoned = DateTime.now().setZone(timeZone);
   const now = zoned.isValid ? zoned : DateTime.now().setZone("UTC");
 
@@ -165,7 +170,7 @@ const renderImage = ({
   const scale = Math.min(width / 400, 3.0);
   const dotSize = Math.max(9, Math.round(11 * scale));
   const dotRadius = Math.max(2, Math.round(2 * scale));
-  const gap = Math.max(5, Math.round(5 * scale));
+  const gap = Math.max(6, Math.round(8 * scale));
   const columns = 15;
   const rowWidth = dotSize * columns + gap * (columns - 1);
   const textSize = Math.min(42, Math.max(12, Math.round(12 * scale)));
@@ -229,17 +234,17 @@ const renderImage = ({
         gap: Math.max(8, Math.round(textSize * 0.5)),
         fontSize: textSize,
         letterSpacing: 1,
-        fontFamily: "monospace",
+        fontFamily: "JetBrains Mono, monospace",
       },
     },
     h(
       "span",
       {
         style: {
-          color: "#fafafa",
+          color: "#ff6a3d",
         },
       },
-      `${stats.daysLeft}`,
+      `${stats.daysLeft}d left`,
     ),
     h(
       "span",
@@ -248,34 +253,7 @@ const renderImage = ({
           color: "#52525b",
         },
       },
-      "days left",
-    ),
-    h(
-      "span",
-      {
-        style: {
-          color: "#27272a",
-        },
-      },
-      "·",
-    ),
-    h(
-      "span",
-      {
-        style: {
-          color: "#fafafa",
-        },
-      },
-      `${stats.percent}`,
-    ),
-    h(
-      "span",
-      {
-        style: {
-          color: "#52525b",
-        },
-      },
-      "%",
+      `· ${stats.percent}%`,
     ),
   );
 
@@ -288,7 +266,7 @@ const renderImage = ({
               fontSize: Math.round(textSize * 1.2),
               color: todaySpecial.color,
               letterSpacing: 1,
-              fontFamily: "monospace",
+              fontFamily: "JetBrains Mono, monospace",
             },
           },
           todaySpecial.label,
@@ -332,7 +310,7 @@ const renderImage = ({
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "flex-start",
-        fontFamily: "monospace",
+        fontFamily: "JetBrains Mono, monospace",
         position: "relative",
         overflow: "hidden",
       },
@@ -356,5 +334,16 @@ const renderImage = ({
     ),
   );
 
-  return new ImageResponse(container, { width, height });
+  return new ImageResponse(container, {
+    width,
+    height,
+    fonts: [
+      {
+        name: "JetBrains Mono",
+        data: fontData,
+        style: "normal",
+        weight: 400,
+      },
+    ],
+  });
 };
