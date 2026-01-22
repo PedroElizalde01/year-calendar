@@ -60,15 +60,23 @@ const blobUrlForId = (id: string) => {
 const fetchBlobProfile = async (id: string): Promise<ProfileRecord | null> => {
   const url = blobUrlForId(id);
   if (!url) {
+    console.error("[fetchBlobProfile] BLOB_BASE_URL not configured");
     return null;
   }
   try {
-    const response = await fetch(url, { method: "GET" });
+    const response = await fetch(url, {
+      method: "GET",
+      cache: "no-store",
+    });
     if (!response.ok) {
+      console.error(
+        `[fetchBlobProfile] Fetch failed: ${response.status} ${response.statusText} for ${url}`,
+      );
       return null;
     }
     const parsed = (await response.json()) as ProfileRecord;
     if (!parsed || typeof parsed.timeZone !== "string") {
+      console.error("[fetchBlobProfile] Invalid profile data:", parsed);
       return null;
     }
     return {
@@ -79,7 +87,8 @@ const fetchBlobProfile = async (id: string): Promise<ProfileRecord | null> => {
         ? parsed.updatedAt
         : new Date().toISOString(),
     };
-  } catch {
+  } catch (error) {
+    console.error("[fetchBlobProfile] Exception:", error);
     return null;
   }
 };

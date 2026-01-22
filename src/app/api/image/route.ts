@@ -106,7 +106,11 @@ export const GET = (request: NextRequest) => {
   if (profileId) {
     return getProfile(profileId).then((profile) => {
       if (!profile) {
-        return Response.json({ error: "not-found" }, { status: 404 });
+        console.error(`[api/image] Profile not found: ${profileId}`);
+        return Response.json(
+          { error: "not-found", profileId },
+          { status: 404 },
+        );
       }
 
       return renderImage({
