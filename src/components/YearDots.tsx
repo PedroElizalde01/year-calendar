@@ -7,44 +7,44 @@ import { buildYearDots, getYearStats } from "@/lib/date";
 import { loadSettings, saveSettings } from "@/lib/storage";
 import type { SpecialDay } from "@/lib/types";
 
-const DEFAULT_SPECIAL_COLOR = "#7c5cff";
+const DEFAULT_SPECIAL_COLOR = "#e879f9";
 const COLOR_OPTIONS = [
-  "#7c5cff",
-  "#9b87ff",
-  "#c046ff",
-  "#ef4444",
-  "#f97316",
-  "#facc15",
-  "#22c55e",
-  "#06b6d4",
+  "#e879f9",
+  "#f472b6",
+  "#fb7185",
+  "#fb923c",
+  "#fbbf24",
+  "#a3e635",
+  "#34d399",
+  "#22d3ee",
 ];
 const MONTHS_SHORT = [
-  "Ene",
+  "Jan",
   "Feb",
   "Mar",
-  "Abr",
+  "Apr",
   "May",
   "Jun",
   "Jul",
-  "Ago",
+  "Aug",
   "Sep",
   "Oct",
   "Nov",
-  "Dic",
+  "Dec",
 ];
 const MONTHS_LONG = [
-  "Enero",
-  "Febrero",
-  "Marzo",
-  "Abril",
-  "Mayo",
-  "Junio",
-  "Julio",
-  "Agosto",
-  "Septiembre",
-  "Octubre",
-  "Noviembre",
-  "Diciembre",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 const getResolvedTimeZone = () =>
@@ -369,7 +369,7 @@ export default function YearDots() {
 
   return (
     <div
-      className="min-h-screen w-full bg-[#0b0b0b] text-white"
+      className="noise relative min-h-screen w-full bg-[--background] text-[--foreground]"
       style={
         isBirthdayToday && birthdayColor
           ? {
@@ -378,61 +378,53 @@ export default function YearDots() {
           : undefined
       }
     >
-      <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center justify-center gap-8 px-6 py-12">
-        <div className="flex w-full flex-col items-center justify-between gap-4 text-xs text-zinc-400 sm:flex-row">
-          <label className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-zinc-500">
-            Timezone
-            <select
-              className="rounded border border-zinc-800 bg-transparent px-2 py-1 text-xs text-zinc-200 outline-none transition focus:border-zinc-600"
-              value={timeZone}
-              onChange={(event) => setTimeZone(event.target.value)}
-            >
-              {(timeZoneOptions.length > 0 ? timeZoneOptions : [timeZone]).map(
-                (zone) => (
-                <option key={zone} value={zone} className="text-black">
-                  {zone}
-                </option>
-              ),
-              )}
-            </select>
-          </label>
-          <label className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-zinc-500">
-            Tamaño
-            <select
-              className="rounded border border-zinc-800 bg-transparent px-2 py-1 text-xs text-zinc-200 outline-none transition focus:border-zinc-600"
-              value={wallpaperPreset}
-              onChange={(event) => setWallpaperPreset(event.target.value)}
-            >
-              <option value="1170x2532" className="text-black">
-                iPhone 14 / 15 (1170x2532)
-              </option>
-              <option value="1179x2556" className="text-black">
-                iPhone 15 Pro (1179x2556)
-              </option>
-              <option value="1206x2622" className="text-black">
-                iPhone 16 Pro (1206x2622)
-              </option>
-              <option value="1290x2796" className="text-black">
-                iPhone 14/15 Pro Max (1290x2796)
-              </option>
-              <option value="1320x2868" className="text-black">
-                iPhone 16 Pro Max (1320x2868)
-              </option>
-            </select>
-          </label>
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center justify-center gap-10 px-6 py-16">
+        <header className="flex w-full flex-col items-center justify-between gap-5 sm:flex-row">
+          <div className="flex flex-wrap items-center gap-4">
+            <label className="group flex items-center gap-2">
+              <span className="font-mono text-[10px] uppercase tracking-wider text-[--muted]">tz</span>
+              <select
+                className="border-b border-[--border] bg-transparent py-1 font-mono text-xs text-[--foreground] outline-none transition hover:border-[--accent] focus:border-[--accent]"
+                value={timeZone}
+                onChange={(event) => setTimeZone(event.target.value)}
+              >
+                {(timeZoneOptions.length > 0 ? timeZoneOptions : [timeZone]).map(
+                  (zone) => (
+                  <option key={zone} value={zone} className="bg-zinc-900 text-white">
+                    {zone}
+                  </option>
+                ),
+                )}
+              </select>
+            </label>
+            <label className="group flex items-center gap-2">
+              <span className="font-mono text-[10px] uppercase tracking-wider text-[--muted]">res</span>
+              <select
+                className="border-b border-[--border] bg-transparent py-1 font-mono text-xs text-[--foreground] outline-none transition hover:border-[--accent] focus:border-[--accent]"
+                value={wallpaperPreset}
+                onChange={(event) => setWallpaperPreset(event.target.value)}
+              >
+                <option value="1170x2532" className="bg-zinc-900 text-white">1170×2532</option>
+                <option value="1179x2556" className="bg-zinc-900 text-white">1179×2556</option>
+                <option value="1206x2622" className="bg-zinc-900 text-white">1206×2622</option>
+                <option value="1290x2796" className="bg-zinc-900 text-white">1290×2796</option>
+                <option value="1320x2868" className="bg-zinc-900 text-white">1320×2868</option>
+              </select>
+            </label>
+          </div>
           <button
             type="button"
             onClick={handleShareLink}
-            className="rounded-full border border-zinc-700 px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-zinc-200 transition hover:border-zinc-500 disabled:cursor-not-allowed disabled:opacity-60"
+            className="group relative overflow-hidden border border-[--accent]/40 bg-[--accent]/10 px-5 py-2 font-mono text-[10px] uppercase tracking-widest text-[--accent] transition-all hover:border-[--accent] hover:bg-[--accent]/20"
           >
-            Aceptar
+            Generate
           </button>
-        </div>
+        </header>
 
-        <div className="relative flex flex-col items-center gap-6">
+        <div className="relative flex flex-col items-center gap-8">
           <div
-            className="grid place-content-center gap-[6px]"
-            style={{ gridTemplateColumns: "repeat(15, 12px)" }}
+            className="grid place-content-center gap-[5px]"
+            style={{ gridTemplateColumns: "repeat(15, 11px)" }}
           >
             {dots.map((dot) => {
               const displayDate = formatDisplayDate(dot.dateISO);
@@ -449,26 +441,28 @@ export default function YearDots() {
                   onMouseMove={handleHoverMove}
                   onMouseLeave={clearHover}
                   aria-label={label}
-                  className="h-[10px] w-[10px] rounded-full transition-transform hover:scale-110"
+                  className="h-[9px] w-[9px] rounded-[2px] transition-all duration-150 hover:scale-125 hover:rounded-[3px]"
                   style={{ backgroundColor: dot.displayColor }}
                 />
               );
             })}
           </div>
 
-          <div className="text-sm text-zinc-300">
-            {stats.daysLeft}d left · {stats.percent}%
+          <div className="flex items-center gap-4 font-mono text-xs tracking-wide text-[--muted]">
+            <span><span className="text-[--foreground]">{stats.daysLeft}</span> days left</span>
+            <span className="text-[--border]">·</span>
+            <span><span className="text-[--foreground]">{stats.percent}</span>%</span>
           </div>
         </div>
 
-        <div className="w-full max-w-3xl rounded-lg border border-zinc-800 bg-[#0f0f0f] px-4 py-3 text-sm text-zinc-200">
+        <div className="w-full max-w-3xl border border-[--border] bg-[--surface]/50 p-4 backdrop-blur-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div className="text-xs text-zinc-500">
-              Link para automation (perfil persistente)
+            <div className="font-mono text-[10px] uppercase tracking-wider text-[--muted]">
+              Automation Link
             </div>
-            <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-zinc-400">
-              {profileId && <span>Perfil: {profileId}</span>}
-              {hasCopied && <span>Copiado</span>}
+            <div className="flex items-center gap-3 font-mono text-[10px] text-[--muted]">
+              {profileId && <span className="text-[--accent]">#{profileId}</span>}
+              {hasCopied && <span className="text-emerald-400">✓ copied</span>}
             </div>
           </div>
           <div className="mt-3 flex flex-col gap-2 sm:flex-row">
@@ -476,82 +470,59 @@ export default function YearDots() {
               type="text"
               value={shareUrl}
               readOnly
-              placeholder="Presioná Aceptar para generar el link"
-              className="w-full rounded border border-zinc-700 bg-transparent px-2 py-2 text-xs text-zinc-200 outline-none"
+              placeholder="Click Generate to get the link"
+              className="w-full border-b border-[--border] bg-transparent px-1 py-2 font-mono text-xs text-[--foreground] outline-none placeholder:text-[--muted]/50"
             />
             <button
               type="button"
               onClick={handleShareLink}
-              className="rounded-full border border-zinc-700 px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-zinc-200 transition hover:border-zinc-500"
+              className="shrink-0 border border-[--border] px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-[--foreground] transition hover:border-[--accent] hover:text-[--accent]"
             >
-              Copiar
+              Copy
             </button>
           </div>
         </div>
 
-        <div className="w-full max-w-3xl rounded-lg border border-zinc-800 bg-[#0f0f0f] px-4 py-4 text-sm text-zinc-200">
+        <div className="w-full max-w-3xl border border-[--border] bg-[--surface]/50 p-4 backdrop-blur-sm">
           <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-zinc-500">
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                className="h-4 w-4 text-zinc-500"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              >
-                <rect x="3.5" y="4.5" width="17" height="16" rx="2" />
-                <path d="M8 3.5v3M16 3.5v3M3.5 9.5h17" />
-              </svg>
-              Fechas especiales
-            </div>
+            <h2 className="font-mono text-[10px] uppercase tracking-wider text-[--muted]">
+              Special Dates
+            </h2>
             <button
               type="button"
               onClick={openAddForm}
-              className="flex items-center gap-2 rounded-full border border-zinc-700 px-3 py-1.5 text-[11px] uppercase tracking-[0.2em] text-zinc-200 transition hover:border-zinc-500"
+              className="flex items-center gap-2 border border-[--border] px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider text-[--foreground] transition hover:border-[--accent] hover:text-[--accent]"
             >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              >
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-              Agregar
+              <span className="text-base leading-none">+</span>
+              New
             </button>
           </div>
 
-          <div className="mt-4 flex flex-col gap-3">
+          <div className="mt-4 flex flex-col gap-2">
             {sortedSpecialDays.length === 0 && (
-              <div className="rounded-lg border border-dashed border-zinc-800 px-4 py-6 text-center text-xs text-zinc-500">
-                Todavía no hay fechas especiales.
+              <div className="border border-dashed border-[--border] px-4 py-8 text-center font-mono text-[11px] text-[--muted]">
+                No special dates yet
               </div>
             )}
             {sortedSpecialDays.map((item) => (
               <div
                 key={`${item.month}-${item.day}`}
-                className="flex items-center justify-between rounded-lg border border-zinc-800 bg-[#111111] px-4 py-3"
+                className="group flex items-center justify-between border-l-2 bg-[--background]/50 px-4 py-3 transition hover:bg-[--surface]"
+                style={{ borderLeftColor: item.color }}
               >
                 <div className="flex items-center gap-3">
-                  <span
-                    className="h-2.5 w-2.5 rounded-full"
-                    style={{ backgroundColor: item.color }}
-                  />
-                  <div className="text-sm font-medium text-zinc-100">
+                  <div className="font-mono text-sm text-[--foreground]">
                     {formatListDate(item.month, item.day)}
                   </div>
                   {item.label && (
-                    <div className="text-xs text-zinc-500">{item.label}</div>
+                    <div className="text-xs text-[--muted]">{item.label}</div>
                   )}
                 </div>
                 <button
                   type="button"
                   onClick={() => handleDeleteSpecial(item.month, item.day)}
-                  aria-label={`Eliminar ${formatListDate(item.month, item.day)}`}
-                  className="rounded-md p-2 text-zinc-500 transition hover:text-zinc-200"
+                  aria-label={`Delete ${formatListDate(item.month, item.day)}`}
+                  className="p-2 text-[--muted] opacity-0 transition group-hover:opacity-100 hover:text-rose-400"
                 >
                   <svg
                     aria-hidden="true"
@@ -561,7 +532,7 @@ export default function YearDots() {
                     stroke="currentColor"
                     strokeWidth="1.5"
                   >
-                    <path d="M4 7h16M9 7V5h6v2M10 11v6M14 11v6M6 7l1 12h10l1-12" />
+                    <path d="M6 6l12 12M18 6l-12 12" />
                   </svg>
                 </button>
               </div>
@@ -569,14 +540,16 @@ export default function YearDots() {
           </div>
 
           {isEditorOpen && (
-            <div className="mt-4 rounded-lg border border-zinc-800 bg-[#111111] px-4 py-4">
+            <div className="mt-4 border border-[--accent]/30 bg-[--background] p-4">
               <div className="flex items-center justify-between">
-                <div className="text-xs text-zinc-400">Nueva fecha</div>
+                <div className="font-mono text-[10px] uppercase tracking-wider text-[--accent]">
+                  {editingDateISO ? "Edit Date" : "New Date"}
+                </div>
                 <button
                   type="button"
                   onClick={closeEditor}
-                  aria-label="Cerrar"
-                  className="rounded p-1 text-zinc-500 transition hover:text-zinc-200"
+                  aria-label="Close"
+                  className="p-1 text-[--muted] transition hover:text-[--foreground]"
                 >
                   <svg
                     aria-hidden="true"
@@ -591,17 +564,17 @@ export default function YearDots() {
                 </button>
               </div>
 
-              <div className="mt-4 flex flex-col gap-4">
+              <div className="mt-4 flex flex-col gap-5">
                 <div className="flex flex-col gap-2 sm:flex-row">
                   <select
                     value={newMonth}
                     onChange={(event) =>
                       setNewMonth(Number(event.target.value))
                     }
-                    className="w-full rounded border border-zinc-700 bg-transparent px-3 py-2 text-sm text-zinc-100 outline-none transition focus:border-zinc-500"
+                    className="w-full border-b border-[--border] bg-transparent px-1 py-2 text-sm text-[--foreground] outline-none transition focus:border-[--accent]"
                   >
                     {MONTHS_LONG.map((label, idx) => (
-                      <option key={label} value={idx + 1} className="text-black">
+                      <option key={label} value={idx + 1} className="bg-zinc-900 text-white">
                         {label}
                       </option>
                     ))}
@@ -609,7 +582,7 @@ export default function YearDots() {
                   <select
                     value={newDay}
                     onChange={(event) => setNewDay(Number(event.target.value))}
-                    className="w-full rounded border border-zinc-700 bg-transparent px-3 py-2 text-sm text-zinc-100 outline-none transition focus:border-zinc-500"
+                    className="w-full border-b border-[--border] bg-transparent px-1 py-2 font-mono text-sm text-[--foreground] outline-none transition focus:border-[--accent]"
                   >
                     {Array.from(
                       {
@@ -623,7 +596,7 @@ export default function YearDots() {
                         <option
                           key={idx + 1}
                           value={idx + 1}
-                          className="text-black"
+                          className="bg-zinc-900 text-white"
                         >
                           {idx + 1}
                         </option>
@@ -633,7 +606,7 @@ export default function YearDots() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
-                  <div className="text-xs text-zinc-400">Color</div>
+                  <div className="font-mono text-[10px] uppercase tracking-wider text-[--muted]">Color</div>
                   <div className="flex flex-wrap items-center gap-2">
                     {COLOR_OPTIONS.map((color) => {
                       const isSelected = color === draftColor;
@@ -642,15 +615,15 @@ export default function YearDots() {
                           key={color}
                           type="button"
                           onClick={() => setDraftColor(color)}
-                          className={`rounded-full p-[3px] transition ${
+                          className={`p-0.5 transition ${
                             isSelected
-                              ? "ring-2 ring-zinc-200"
-                              : "ring-1 ring-transparent"
+                              ? "ring-1 ring-[--foreground] ring-offset-1 ring-offset-[--background]"
+                              : ""
                           }`}
                           aria-label={`Color ${color}`}
                         >
                           <span
-                            className="block h-5 w-5 rounded-full"
+                            className="block h-5 w-5"
                             style={{ backgroundColor: color }}
                           />
                         </button>
@@ -659,43 +632,43 @@ export default function YearDots() {
                   </div>
                 </div>
 
-                <label className="flex items-center gap-3 text-xs text-zinc-400">
-                  Label
+                <label className="flex flex-col gap-2">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-[--muted]">Label</span>
                   <input
                     type="text"
                     value={draftLabel}
                     onChange={(event) => setDraftLabel(event.target.value)}
-                    placeholder="Ej: Mi cumple, Aniversario..."
+                    placeholder="e.g. birthday, anniversary..."
                     maxLength={40}
-                    className="w-full rounded border border-zinc-700 bg-transparent px-3 py-2 text-sm text-zinc-100 outline-none transition focus:border-zinc-500"
+                    className="w-full border-b border-[--border] bg-transparent px-1 py-2 text-sm text-[--foreground] outline-none transition placeholder:text-[--muted]/50 focus:border-[--accent]"
                   />
                 </label>
 
-                <label className="flex items-center gap-3 text-xs text-zinc-400">
+                <label className="flex cursor-pointer items-center gap-3 text-xs text-[--muted]">
                   <input
                     type="checkbox"
                     checked={draftIsBirthday}
                     onChange={(event) => setDraftIsBirthday(event.target.checked)}
-                    className="h-4 w-4 accent-[#f5a623]"
+                    className="h-4 w-4 accent-[--accent]"
                   />
-                  Cumpleaños
+                  <span>Birthday</span>
                 </label>
               </div>
 
-              <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+              <div className="mt-5 flex flex-col gap-2 sm:flex-row">
                 <button
                   type="button"
                   onClick={handleSave}
-                  className="flex-1 rounded-md bg-zinc-200 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-900 transition hover:bg-zinc-100"
+                  className="flex-1 bg-[--accent] px-4 py-2.5 font-mono text-[10px] font-medium uppercase tracking-widest text-[--background] transition hover:opacity-90"
                 >
-                  Agregar
+                  Save
                 </button>
                 <button
                   type="button"
                   onClick={closeEditor}
-                  className="flex-1 rounded-md border border-zinc-700 px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-zinc-200 transition hover:border-zinc-500"
+                  className="flex-1 border border-[--border] px-4 py-2.5 font-mono text-[10px] uppercase tracking-widest text-[--foreground] transition hover:border-[--muted]"
                 >
-                  Cancelar
+                  Cancel
                 </button>
               </div>
             </div>
@@ -704,7 +677,7 @@ export default function YearDots() {
       </div>
       {hoverLabel && (
         <div
-          className="pointer-events-none fixed z-50 rounded bg-black/90 px-2 py-1 text-[11px] text-zinc-100"
+          className="pointer-events-none fixed z-50 border border-[--border] bg-[--surface] px-2 py-1 font-mono text-[10px] text-[--foreground] shadow-lg"
           style={{ left: hoverPos.x + 12, top: hoverPos.y + 12 }}
         >
           {hoverLabel}
