@@ -163,12 +163,13 @@ const renderImage = ({
   const dots = buildYearDots(now, specialByDate);
 
   const scale = Math.min(width / 400, 3.0);
-  const dotSize = Math.max(9, Math.round(13 * scale));
-  const gap = Math.max(6, Math.round(8 * scale));
+  const dotSize = Math.max(9, Math.round(11 * scale));
+  const dotRadius = Math.max(2, Math.round(2 * scale));
+  const gap = Math.max(5, Math.round(5 * scale));
   const columns = 15;
   const rowWidth = dotSize * columns + gap * (columns - 1);
   const textSize = Math.min(42, Math.max(12, Math.round(12 * scale)));
-  const textGap = Math.max(14, Math.round(20 * scale));
+  const textGap = Math.max(14, Math.round(24 * scale));
   const topOffset = Math.round(height * 0.265);
 
   const todayISO = now.toISODate();
@@ -182,7 +183,7 @@ const renderImage = ({
       style: {
         width: dotSize,
         height: dotSize,
-        borderRadius: 999,
+        borderRadius: dotRadius,
         backgroundColor: dot.displayColor,
       },
     }),
@@ -225,28 +226,56 @@ const renderImage = ({
     {
       style: {
         display: "flex",
-        gap: Math.max(6, Math.round(textSize * 0.35)),
+        gap: Math.max(8, Math.round(textSize * 0.5)),
         fontSize: textSize,
-        letterSpacing: 0.5,
+        letterSpacing: 1,
+        fontFamily: "monospace",
       },
     },
     h(
       "span",
       {
         style: {
-          color: "#ff6a3d",
+          color: "#fafafa",
         },
       },
-      `${stats.daysLeft}d left`,
+      `${stats.daysLeft}`,
     ),
     h(
       "span",
       {
         style: {
-          color: "#bdbdbd",
+          color: "#52525b",
         },
       },
-      `· ${stats.percent}%`,
+      "days left",
+    ),
+    h(
+      "span",
+      {
+        style: {
+          color: "#27272a",
+        },
+      },
+      "·",
+    ),
+    h(
+      "span",
+      {
+        style: {
+          color: "#fafafa",
+        },
+      },
+      `${stats.percent}`,
+    ),
+    h(
+      "span",
+      {
+        style: {
+          color: "#52525b",
+        },
+      },
+      "%",
     ),
   );
 
@@ -259,6 +288,7 @@ const renderImage = ({
               fontSize: Math.round(textSize * 1.2),
               color: todaySpecial.color,
               letterSpacing: 1,
+              fontFamily: "monospace",
             },
           },
           todaySpecial.label,
@@ -278,23 +308,36 @@ const renderImage = ({
       })
     : null;
 
+  const noiseLayer = h("div", {
+    style: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+      opacity: 0.03,
+    },
+  });
+
   const container = h(
     "div",
     {
       style: {
         width: "100%",
         height: "100%",
-        backgroundColor: "#0b0b0b",
-        color: "#ffffff",
+        backgroundColor: "#09090b",
+        color: "#fafafa",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "flex-start",
-        fontFamily: "Arial, Helvetica, sans-serif",
+        fontFamily: "monospace",
         position: "relative",
         overflow: "hidden",
       },
     },
+    noiseLayer,
     glowLayer,
     h(
       "div",
