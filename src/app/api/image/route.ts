@@ -173,6 +173,8 @@ const renderImage = ({
 
   const todayISO = now.toISODate();
   const todaySpecial = todayISO ? specialByDate[todayISO] : null;
+  const isBirthdayToday = todaySpecial?.isBirthday ?? false;
+  const birthdayColor = isBirthdayToday ? todaySpecial?.color : null;
 
   const dotNodes = dots.map((dot) =>
     h("div", {
@@ -263,6 +265,22 @@ const renderImage = ({
         )
       : null;
 
+  const glowLayer = isBirthdayToday && birthdayColor
+    ? h("div", {
+        style: {
+          position: "absolute",
+          top: topOffset - Math.round(height * 0.15),
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: Math.round(width * 0.7),
+          height: Math.round(width * 0.7),
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${birthdayColor}66 0%, ${birthdayColor}33 40%, transparent 70%)`,
+          filter: `blur(${Math.round(scale * 30)}px)`,
+        },
+      })
+    : null;
+
   const container = h(
     "div",
     {
@@ -276,8 +294,11 @@ const renderImage = ({
         alignItems: "center",
         justifyContent: "flex-start",
         fontFamily: "Arial, Helvetica, sans-serif",
+        position: "relative",
+        overflow: "hidden",
       },
     },
+    glowLayer,
     h(
       "div",
       {

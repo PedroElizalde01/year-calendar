@@ -120,6 +120,9 @@ export default function YearDots() {
   }, [timeZone]);
 
   const todayKey = now.toISODate();
+  const todaySpecial = todayKey ? specialByDate[todayKey] : null;
+  const isBirthdayToday = todaySpecial?.isBirthday ?? false;
+  const birthdayColor = isBirthdayToday ? todaySpecial?.color : null;
 
   useEffect(() => {
     const current = DateTime.now().setZone(timeZone);
@@ -416,7 +419,13 @@ export default function YearDots() {
           </button>
         </div>
 
-        <div className="flex flex-col items-center gap-6">
+        <div className="relative flex flex-col items-center gap-6">
+          {isBirthdayToday && birthdayColor && (
+            <div
+              className="birthday-glow pointer-events-none absolute -inset-16 -z-10 rounded-full opacity-60 blur-3xl"
+              style={{ backgroundColor: birthdayColor }}
+            />
+          )}
           <div
             className="grid place-content-center gap-[6px]"
             style={{ gridTemplateColumns: "repeat(15, 12px)" }}
