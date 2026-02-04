@@ -476,7 +476,8 @@ export default function YearDots() {
             <button
               type="button"
               onClick={handleShareLink}
-              className="shrink-0 border border-[--border] px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-[--foreground] transition hover:border-[--accent] hover:text-[--accent]"
+              disabled={!shareUrl}
+              className="shrink-0 border border-[--border] px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-[--foreground] transition hover:border-[--accent] hover:text-[--accent] disabled:cursor-default disabled:opacity-40 disabled:hover:border-[--border] disabled:hover:text-[--muted]"
             >
               Copy
             </button>
