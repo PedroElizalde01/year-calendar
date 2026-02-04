@@ -102,6 +102,11 @@ export const YearTiles = () => {
             setIsAutomationOpen(true);
           }}
         />
+        <AutomationStepsModal
+          isOpen={isAutomationOpen}
+          imageSrc="/screenshots/automation-steps.png"
+          onClose={() => setIsAutomationOpen(false)}
+        />
 
         <SpecialDatesCard
           specialDays={editor.sortedSpecialDays}
@@ -135,11 +140,6 @@ export const YearTiles = () => {
           y={hover.hoverPos.y}
         />
       )}
-      <AutomationStepsModal
-        isOpen={isAutomationOpen}
-        imageSrc="/screenshots/automation-steps.png"
-        onClose={() => setIsAutomationOpen(false)}
-      />
     </div>
   );
 };

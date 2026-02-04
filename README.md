@@ -1,12 +1,9 @@
-# ![Icon](public/icon.svg) Year Tiles
+# Year Tiles
 
 A minimal year-at-a-glance tile calendar. Mark special dates with colors and labels, pick your time zone, and generate a shareable wallpaper link.
 
 <img alt='mobile-background' src="public/screenshots/mobile-background.png" width="400">
 
-![Desktop](public/screenshots/desktop-home.png)
-![Set Date](public/screenshots/desktop-set-date.png)
-![Desktop Alternate](public/screenshots/desktop-home-2.png)
 
 ## Features
 - Year grid with daily tiles and hover labels
@@ -44,3 +41,9 @@ After you click **Copy** in the app, follow these steps to set up the daily wall
 5. Important: In `Set Wallpaper Photo`, tap the arrow (→) to show options, then disable **Crop to Subject** and **Show Preview**. This prevents iOS from cropping and asking for confirmation each time.
 
 ![Automation Steps](public/screenshots/automation-steps.png)
+
+## Screenshots
+
+<img alt='desktop1' src="https://raw.githubusercontent.com/PedroElizalde01/year-calendar/refs/heads/main/public/screenshots/desktop-home.png" width="1000">
+<img alt='desktop2' src="https://raw.githubusercontent.com/PedroElizalde01/year-calendar/refs/heads/main/public/screenshots/desktop-set-date.png" width="1000">
+<img alt='desktop3' src="https://raw.githubusercontent.com/PedroElizalde01/year-calendar/refs/heads/main/public/screenshots/desktop-home-2.png" width="1000">
