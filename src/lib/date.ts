@@ -9,7 +9,7 @@ export type YearStats = {
   percent: number;
 };
 
-export type YearDot = {
+export type YearTile = {
   dateISO: string;
   isPast: boolean;
   isToday: boolean;
@@ -29,14 +29,14 @@ export const getYearStats = (now: DateTime): YearStats => {
   return { daysInYear, dayOfYear, daysLeft, percent };
 };
 
-export const buildYearDots = (
+export const buildYearTiles = (
   now: DateTime,
   specialByDate: Record<string, SpecialDay>,
-): YearDot[] => {
+): YearTile[] => {
   const start = now.startOf("year");
   const today = now.startOf("day");
   const daysInYear = start.daysInYear;
-  const dots: YearDot[] = [];
+  const tiles: YearTile[] = [];
 
   for (let i = 0; i < daysInYear; i += 1) {
     const date = start.plus({ days: i });
@@ -52,7 +52,7 @@ export const buildYearDots = (
     const special = specialByDate[dateISO];
     const displayColor = special?.color ?? baseColor;
 
-    dots.push({
+    tiles.push({
       dateISO,
       isPast,
       isToday,
@@ -63,5 +63,5 @@ export const buildYearDots = (
     });
   }
 
-  return dots;
+  return tiles;
 };

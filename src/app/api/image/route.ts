@@ -3,7 +3,7 @@ import { DateTime } from "luxon";
 import type { NextRequest } from "next/server";
 import { createElement as h } from "react";
 
-import { buildYearDots, getYearStats } from "@/lib/date";
+import { buildYearTiles, getYearStats } from "@/lib/date";
 import type { SpecialDay } from "@/lib/types";
 import { getProfile } from "@/lib/profileStore";
 
@@ -175,7 +175,7 @@ const renderImage = async ({
   }
 
   const stats = getYearStats(now);
-  const dots = buildYearDots(now, specialByDate);
+  const tiles = buildYearTiles(now, specialByDate);
 
   const scale = Math.min(width / 400, 3.0);
   const dotSize = Math.max(9, Math.round(11 * scale));
@@ -192,7 +192,7 @@ const renderImage = async ({
   const isBirthdayToday = todaySpecial?.isBirthday ?? false;
   const birthdayColor = isBirthdayToday ? todaySpecial?.color : null;
 
-  const dotNodes = dots.map((dot) =>
+  const dotNodes = tiles.map((dot) =>
     h("div", {
       key: dot.dateISO,
       style: {

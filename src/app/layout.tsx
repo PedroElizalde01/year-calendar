@@ -15,8 +15,11 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Year Dots",
+  title: "Year Tiles",
   description: "Your year at a glance",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

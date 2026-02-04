@@ -1,9 +1,9 @@
-import YearDots from "@/components/YearDots";
+import YearTiles from "@/components/YearTiles";
 
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <YearDots />
+      <YearTiles />
     </div>
   );
 }
