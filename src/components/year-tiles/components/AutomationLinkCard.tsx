@@ -3,6 +3,7 @@ export type AutomationLinkCardProps = {
   hasCopied: boolean;
   profileId: string | null;
   onGenerate: () => void;
+  onCopy: () => void;
 };
 
 export const AutomationLinkCard = ({
@@ -10,6 +11,7 @@ export const AutomationLinkCard = ({
   hasCopied,
   profileId,
   onGenerate,
+  onCopy,
 }: AutomationLinkCardProps) => (
   <div className="w-full max-w-3xl border border-[--border] bg-[--surface]/50 p-4 backdrop-blur-sm">
     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -31,7 +33,7 @@ export const AutomationLinkCard = ({
       />
       <button
         type="button"
-        onClick={onGenerate}
+        onClick={onCopy}
         disabled={!shareUrl}
         className="shrink-0 border border-[--border] px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-[--foreground] transition hover:border-[--accent] hover:text-[--accent] disabled:cursor-default disabled:opacity-40 disabled:hover:border-[--border] disabled:hover:text-[--muted]"
       >

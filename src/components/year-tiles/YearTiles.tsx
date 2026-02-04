@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { buildYearTiles, getYearStats } from "@/lib/date";
 import { buildSpecialByDate } from "./utils";
@@ -9,6 +9,7 @@ import { useSettingsState } from "./hooks/useSettingsState";
 import { useShareLink } from "./hooks/useShareLink";
 import { useSpecialEditor } from "./hooks/useSpecialEditor";
 import { AutomationLinkCard } from "./components/AutomationLinkCard";
+import { AutomationStepsModal } from "./components/AutomationStepsModal";
 import { HeaderControls } from "./components/HeaderControls";
 import { HoverLabel } from "./components/HoverLabel";
 import { SpecialDateEditor } from "./components/SpecialDateEditor";
@@ -16,6 +17,7 @@ import { SpecialDatesCard } from "./components/SpecialDatesCard";
 import { TilesGrid } from "./components/TilesGrid";
 
 export const YearTiles = () => {
+  const [isAutomationOpen, setIsAutomationOpen] = useState(false);
   const {
     timeZone,
     setTimeZone,
@@ -95,6 +97,10 @@ export const YearTiles = () => {
           hasCopied={share.hasCopied}
           profileId={profileId}
           onGenerate={share.handleShareLink}
+          onCopy={async () => {
+            await share.handleShareLink();
+            setIsAutomationOpen(true);
+          }}
         />
 
         <SpecialDatesCard
@@ -129,6 +135,11 @@ export const YearTiles = () => {
           y={hover.hoverPos.y}
         />
       )}
+      <AutomationStepsModal
+        isOpen={isAutomationOpen}
+        imageSrc="/screenshots/automation-steps.png"
+        onClose={() => setIsAutomationOpen(false)}
+      />
     </div>
   );
 };
