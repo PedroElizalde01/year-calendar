@@ -40,7 +40,7 @@ After you click **Copy** in the app, follow these steps to set up the daily wall
 4. Add action `Set Wallpaper Photo` → choose **Lock Screen**.
 5. Important: In `Set Wallpaper Photo`, tap the arrow (→) to show options, then disable **Crop to Subject** and **Show Preview**. This prevents iOS from cropping and asking for confirmation each time.
 
-![Automation Steps](public/screenshots/automation-steps.png)
+<img alt='mobile-background' src="public/screenshots/desktop-automation-steps.png" width="1000">
 
 ## Screenshots
 
