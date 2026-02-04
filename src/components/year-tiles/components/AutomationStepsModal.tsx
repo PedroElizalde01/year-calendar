@@ -1,12 +1,10 @@
 export type AutomationStepsModalProps = {
   isOpen: boolean;
-  imageSrc: string;
   onClose: () => void;
 };
 
 export const AutomationStepsModal = ({
   isOpen,
-  imageSrc,
   onClose,
 }: AutomationStepsModalProps) => {
   if (!isOpen) {
@@ -46,7 +44,7 @@ export const AutomationStepsModal = ({
           <span className="text-[--foreground]">Automation</span> tab →{" "}
           <span className="text-[--foreground]">New Automation</span> →{" "}
           <span className="text-[--foreground]">Time of Day</span> →{" "}
-          <span className="text-[--foreground]">6:00 AM</span> → Repeat{" "}
+          <span className="text-[--foreground]">00:00 AM</span> → Repeat{" "}
           <span className="text-[--foreground]">Daily</span> →{" "}
           <span className="text-[--foreground]">Run Immediately</span> →{" "}
           <span className="text-[--foreground]">Create New Shortcut</span>
@@ -69,11 +67,6 @@ export const AutomationStepsModal = ({
           and <span className="text-amber-100">Show Preview</span>.
         </div>
       </div>
-      <img
-        src={imageSrc}
-        alt="Automation steps"
-        className="mt-4 block h-auto w-full rounded-xl border border-[--border]"
-      />
     </div>
   );
 };

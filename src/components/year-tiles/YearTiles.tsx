@@ -104,7 +104,6 @@ export const YearTiles = () => {
         />
         <AutomationStepsModal
           isOpen={isAutomationOpen}
-          imageSrc="/screenshots/automation-steps.png"
           onClose={() => setIsAutomationOpen(false)}
         />
 
