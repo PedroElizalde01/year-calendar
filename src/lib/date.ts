@@ -23,7 +23,7 @@ export const getYearStats = (now: DateTime): YearStats => {
   const day = now.startOf("day");
   const daysInYear = day.daysInYear;
   const dayOfYear = day.ordinal;
-  const daysLeft = daysInYear - dayOfYear;
+  const daysLeft = daysInYear - dayOfYear - 1;
   const percent = Math.round((dayOfYear / daysInYear) * 100);
 
   return { daysInYear, dayOfYear, daysLeft, percent };
