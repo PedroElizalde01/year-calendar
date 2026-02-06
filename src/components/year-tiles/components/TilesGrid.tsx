@@ -49,7 +49,7 @@ export const TilesGrid = ({
     </div>
 
     <div className="flex items-center gap-4 font-mono text-xs tracking-wide text-[--muted]">
-      <span>
+      <span className="text-[#ff6a3d]">
         <span className="text-[--foreground]">{stats.daysLeft}</span> days
         left
       </span>
